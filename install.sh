@@ -2,9 +2,9 @@
 # 原脚本链接：https://raw.githubusercontent.com/qinghuas/socks5-install/master/socks5.sh
 
 # 参数和其说明
-ss5_port=24024
-ss5_username=8vip
-ss5_password=8vip
+ss5_port=$prot
+ss5_username=$username
+ss5_password=$password
 
 # 获取脚本执行的绝对路径
 work_path=$(dirname $(readlink -f $0))

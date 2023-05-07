@@ -212,7 +212,7 @@ if [ -e /etc/opt/ss5/ss5.conf ];then
 					echo "socks5 user add \$username \$password";;
 			esac;;
 		port)
-			PORT_ADD ${command_3};;
+			PORT_ADD ${command_2};;
 		start)
 			service ss5 start;;
 		stop)

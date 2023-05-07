@@ -1,3 +1,4 @@
+# 原脚本来源：https://github.com/senjianlu/one-click-scripts
 #!/bin/bash
 # 原脚本链接：https://raw.githubusercontent.com/qinghuas/socks5-install/master/socks5.sh
 

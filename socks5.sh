@@ -63,7 +63,7 @@ INSTALL_SOCKS5(){
 	CHECK_OS
 	case "${release}" in
 		centos)
-			yum -y install iptables firewalld iptables-services
+			yum -y install iptables firewalld iptables-services make
 			yum -y install gcc zip git curl wget unzip screen net-tools pam-devel openssl-devel openldap-devel;;
 		debian|ubuntu)
 			echo "非常抱歉,暂不支持除CentOS以外的系统."
@@ -80,6 +80,11 @@ INSTALL_SOCKS5(){
 	./configure
 	make
 	make install
+	# 新建 /var/run/ss5/ss5.pid 用文件夹
+	mkdir /var/run/ss5
+	# 开机自动新建文件夹防止 SOCKS5 开机启动出错
+	echo "@reboot mkdir -p /var/run/ss5" >> /var/spool/cron/root
+	service crond restart
 	cd /root
 	#开启认证
 	sed -i '87c auth    0.0.0.0/0               -              u' /etc/opt/ss5/ss5.conf
@@ -112,6 +117,23 @@ UNINSTALL_SOCKS5(){
 	echo "SOCKS5 has been uninstalled."
 }
 
+PORT_ADD(){
+	portn=${1}
+	
+	if [[ ${portn} = "" ]];then
+		echo "你必须设置一个端口号."
+		exit
+	else
+		#更改监听端口
+		sed -i "N;8iexport SS5_SOCKS_PORT=${portn}" /etc/rc.d/init.d/ss5
+		sed -i 'N;8iexport SS5_SOCKS_USER=root' /etc/rc.d/init.d/ss5
+		service ss5 restart > /dev/null
+		
+		SHOW_SOCKS5
+		Address=$(curl -s ipv4.ip.sb)
+		echo "完成,连接地址:${Address}:${portn}"
+	fi
+}
 ADD_USER(){
 	username=${1}
 	password=${2}
@@ -189,6 +211,8 @@ if [ -e /etc/opt/ss5/ss5.conf ];then
 					echo "socks5 user {del|list}"
 					echo "socks5 user add \$username \$password";;
 			esac;;
+		port)
+			PORT_ADD ${command_3};;
 		start)
 			service ss5 start;;
 		stop)
@@ -210,6 +234,7 @@ if [ -e /etc/opt/ss5/ss5.conf ];then
 		*)
 			SHOW_SOCKS5
 			echo "socks5 {update|info}"
+			echo "socks5 port"
 			echo "socks5 user {add|del|list}"
 			echo "socks5 {install|uninstall}"
 			echo "socks5 {start|stop|restart|status}";;

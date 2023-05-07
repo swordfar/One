@@ -92,6 +92,9 @@ INSTALL_SOCKS5(){
 	rm -rf /etc/opt/ss5/ss5.passwd
 	#修正/etc/rc.d/init.d/ss5文件语法错误
 	sed -i '18c  [[ ${NETWORKING} = "no" ]] && exit 0' /etc/rc.d/init.d/ss5
+	#添加默认端口
+	sed -i "N;8iexport SS5_SOCKS_PORT=5555" /etc/rc.d/init.d/ss5
+	sed -i 'N;8iexport SS5_SOCKS_USER=root' /etc/rc.d/init.d/ss5
 	#设置开机自启
 	chmod u+x /etc/rc.d/init.d/ss5
 	chkconfig --add ss5
@@ -125,8 +128,7 @@ PORT_ADD(){
 		exit
 	else
 		#更改监听端口
-		sed -i "N;8iexport SS5_SOCKS_PORT=${portn}" /etc/rc.d/init.d/ss5
-		sed -i 'N;8iexport SS5_SOCKS_USER=root' /etc/rc.d/init.d/ss5
+		sed -i "8c export SS5_SOCKS_PORT=${portn}" /etc/rc.d/init.d/ss5
 		service ss5 restart > /dev/null
 		
 		SHOW_SOCKS5

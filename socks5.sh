@@ -223,7 +223,7 @@ if [ -e /etc/opt/ss5/ss5.conf ];then
 			service ss5 status;;
 		update)
 			rm -rf /usr/bin/socks5
-			wget -qO /usr/bin/socks5 "https://raw.githubusercontent.com/qinghuas/socks5-install/master/socks5.sh"
+			wget -qO /usr/bin/socks5 "https://raw.github.com/swordfar/One/master/socks5.sh"
 			chmod 755 /usr/bin/socks5
 			echo "Update Done.";;
 		info)

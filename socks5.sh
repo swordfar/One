@@ -1,3 +1,5 @@
+# 原脚本下载：https://raw.githubusercontent.com/qinghuas/socks5-install/master/socks5.sh
+# 原脚本主页：https://github.com/qinghuas/socks5-install
 #!/bin/bash
 
 SOCKS5_INSTALL_PATH="/usr/local/share"
